@@ -1,39 +1,59 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>安藤輝哉のページ</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>安藤研究室ポータル</title>
   <style>
     body {
-      font-family: sans-serif;
-      background: #f5f7fa;
+      font-family: "Helvetica Neue", sans-serif;
+      margin: 0;
+      background: linear-gradient(135deg, #1a73e8, #0f9d58);
+      color: white;
       text-align: center;
       padding: 50px;
     }
-    h1 {
-      color: #3366cc;
+    header {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      font-weight: bold;
     }
-    p {
-      color: #333;
+    main {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2rem;
+      border-radius: 12px;
+      display: inline-block;
+      text-align: left;
+      max-width: 600px;
+    }
+    h2 {
+      color: #ffeb3b;
     }
     a {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 10px 20px;
-      background: #3366cc;
-      color: white;
-      text-decoration: none;
-      border-radius: 8px;
+      color: #fff;
+      text-decoration: underline;
     }
-    a:hover {
-      background: #224499;
+    footer {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      opacity: 0.8;
     }
   </style>
 </head>
 <body>
-  <h1>こんにちは！</h1>
-  <p>これはHTMLとCSSだけで作ったシンプルなWebページです。</p>
-  <a href="https://www.google.com">Googleへ行く</a>
+  <header>安藤研究室ポータル</header>
+  <main>
+    <h2>Welcome!</h2>
+    <p>ここは研究室のWebページのサンプルです。</p>
+    <p>将来的には研究成果やメンバー紹介、論文リストなどを掲載できます。</p>
+    <h2>リンク</h2>
+    <ul>
+      <li><a href="https://github.com/">GitHub</a></li>
+      <li><a href="https://pages.github.com/">GitHub Pages</a></li>
+    </ul>
+  </main>
+  <footer>
+    © 2025 Ando Lab
+  </footer>
 </body>
 </html>
-
