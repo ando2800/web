@@ -5,55 +5,200 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>安藤ポータルサイト</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     body {
       font-family: "Helvetica Neue", sans-serif;
-      margin: 0;
       background: linear-gradient(135deg, #1a73e8, #0f9d58);
       color: white;
-      text-align: center;
-      padding: 50px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 50px 20px;
+      flex: 1;
     }
     header {
-      font-size: 2rem;
-      margin-bottom: 1rem;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .site-title {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
       font-weight: bold;
     }
+    .site-subtitle {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
     main {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+    }
+    .posts-section {
       background: rgba(255, 255, 255, 0.1);
       padding: 2rem;
       border-radius: 12px;
-      display: inline-block;
-      text-align: left;
-      max-width: 600px;
     }
-    h2 {
+    .section-title {
       color: #ffeb3b;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid #ffeb3b;
+      padding-bottom: 0.5rem;
     }
-    a {
+    .post-item {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      transition: all 0.3s;
+      border-left: 4px solid #ffeb3b;
+    }
+    .post-item:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateX(5px);
+    }
+    .post-item a {
+      text-decoration: none;
+      color: white;
+    }
+    .post-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .post-date {
+      color: #ffeb3b;
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+    }
+    .post-description {
+      font-size: 0.95rem;
+      opacity: 0.9;
+      line-height: 1.4;
+    }
+    .sidebar {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2rem;
+      border-radius: 12px;
+      height: fit-content;
+    }
+    .sidebar h3 {
+      color: #ffeb3b;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #ffeb3b;
+      padding-bottom: 0.5rem;
+    }
+    .sidebar ul {
+      list-style: none;
+    }
+    .sidebar li {
+      margin-bottom: 0.8rem;
+    }
+    .sidebar a {
       color: #fff;
       text-decoration: underline;
+      transition: color 0.3s;
+    }
+    .sidebar a:hover {
+      color: #ffeb3b;
     }
     footer {
+      text-align: center;
+      padding: 2rem;
       margin-top: 2rem;
       font-size: 0.9rem;
       opacity: 0.8;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    @media (max-width: 768px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+      .container {
+        padding: 20px 10px;
+      }
+      .site-title {
+        font-size: 1.8rem;
+      }
     }
   </style>
 </head>
 <body>
-  <header>安藤ポータルサイト</header>
-  <main>
-    <h2>Welcome!</h2>
-    <p>ここは安藤のwebページです。</p>
-    <p>これからどんどんいろんな記事とかを載せていきたいと考えています。</p>
-    <h2>リンク</h2>
-    <ul>
-      <li><a href="https://github.com/">GitHub</a></li>
-      <li><a href="https://pages.github.com/">GitHub Pages</a></li>
-    </ul>
-  </main>
+  <div class="container">
+    <header>
+      <div class="site-title">安藤ポータルサイト</div>
+      <div class="site-subtitle">日記とリンク集</div>
+    </header>
+    <main>
+      <section class="posts-section">
+        <h2 class="section-title">📔 最新の日記</h2>
+        <div id="posts-list"></div>
+      </section>
+      <aside class="sidebar">
+        <h3>🔗 リンク</h3>
+        <ul>
+          <li><a href="https://github.com/">GitHub</a></li>
+          <li><a href="https://pages.github.com/">GitHub Pages</a></li>
+        </ul>
+      </aside>
+    </main>
+  </div>
   <footer>
     © 2025 Ando Lab
   </footer>
+
+  <script>
+    // 記事データを読み込んで表示
+    async function loadPosts() {
+      try {
+        const response = await fetch('./posts/data.json');
+        const data = await response.json();
+        
+        // 日付の新しい順にソート
+        const sortedPosts = data.posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+        const postsContainer = document.getElementById('posts-list');
+        postsContainer.innerHTML = '';
+        
+        sortedPosts.forEach(post => {
+          const postElement = document.createElement('a');
+          postElement.href = `./posts/${post.id}.html`;
+          postElement.className = 'post-item';
+          
+          const dateObj = new Date(post.date);
+          const formattedDate = dateObj.toLocaleDateString('ja-JP', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+          });
+          
+          postElement.innerHTML = `
+            <div class="post-title">${post.title}</div>
+            <div class="post-date">📅 ${formattedDate}</div>
+            <div class="post-description">${post.description}</div>
+          `;
+          
+          postsContainer.appendChild(postElement);
+        });
+      } catch (error) {
+        console.error('記事の読み込みに失敗しました:', error);
+        document.getElementById('posts-list').innerHTML = '<p>記事を読み込めませんでした。</p>';
+      }
+    }
+    
+    // ページ読み込み時に記事を読み込む
+    document.addEventListener('DOMContentLoaded', loadPosts);
+  </script>
 </body>
 </html>
